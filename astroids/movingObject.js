@@ -5,7 +5,8 @@ Asteroids.MovingObject = function (newMovingObject) {
   this.vel = newMovingObject.vel,
   this.radius = newMovingObject.radius,
   this.color = newMovingObject.color,
-  this.game = newMovingObject.game;
+  this.game = newMovingObject.game,
+  this.isWrappable = true;
 };
 
 Asteroids.MovingObject.prototype.draw = function (ctx) {
@@ -16,8 +17,17 @@ Asteroids.MovingObject.prototype.draw = function (ctx) {
 };
 
 Asteroids.MovingObject.prototype.move = function () {
-  this.pos = this.game.wrap([this.pos[0] + this.vel[0],
-                                  this.pos[1] + this.vel[1]]);
+  newPos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
+  if (this.game.isOutOfBounds(newPos)) {
+    if (this.isWrappable) {
+      this.pos = this.game.wrap(newPos);
+    } else {
+      this.game.remove(this);
+    }
+  } else {
+    this.pos = newPos
+  }
+
 };
 
 Asteroids.MovingObject.prototype.isCollidedWith = function (otherObject) {
@@ -28,4 +38,8 @@ Asteroids.MovingObject.prototype.isCollidedWith = function (otherObject) {
   } else {
     return false;
   }
+};
+
+Asteroids.MovingObject.prototype.collideWith = function (otherObject) {
+
 };

@@ -10,4 +10,14 @@ Asteroids.Asteroid = function (pos, game) {
 
 Asteroids.Util.inherits(Asteroids.Asteroid, Asteroids.MovingObject);
 
-Asteroids.Asteroid.RADIUS = 30
+Asteroids.Asteroid.RADIUS = 30;
+
+Asteroids.Asteroid.prototype.collideWith = function (otherObject) {
+  if (otherObject instanceof Asteroids.Ship) {
+    otherObject.relocate();
+  } else if (otherObject instanceof Asteroids.Bullet) {
+    game = this.game;
+    game.remove(this);
+    game.remove(otherObject);
+  }
+};

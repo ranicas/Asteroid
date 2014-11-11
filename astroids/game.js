@@ -1,7 +1,9 @@
 var Asteroids = window.Asteroids || {};
 
 Asteroids.Game = function () {
-  this.asteroids = [];
+  this.asteroids = [],
+  this.ship = new Asteroids.Ship (Asteroids.Game.randomPosition(), this),
+  this.bullets = [];
 };
 
 Asteroids.Game.DIM_X = window.innerWidth;
@@ -23,11 +25,11 @@ Asteroids.Game.randomPosition = function() {
 
 Asteroids.Game.prototype.draw = function (ctx) {
   ctx.clearRect(0, 0, Asteroids.Game.DIM_X, Asteroids.Game.DIM_Y);
-  this.asteroids.forEach(function (el) { el.draw(ctx); });
+  this.allObjects().forEach(function (el) { el.draw(ctx); });
 };
 
 Asteroids.Game.prototype.moveObjects = function() {
-  this.asteroids.forEach(function(el) { el.move(); });
+  this.allObjects().forEach(function(el) { el.move(); });
 };
 
 Asteroids.Game.prototype.wrap = function (pos) {
@@ -42,11 +44,11 @@ Asteroids.Game.prototype.wrap = function (pos) {
 };
 
 Asteroids.Game.prototype.checkCollisions = function () {
-  for(var i = 0; i < this.asteroids.length; i++) {
-    for(var j = i + 1; j < this.asteroids.length; j++) {
-      if (this.asteroids[i].isCollidedWith(this.asteroids[j])) {
-        this.remove(j);
-        this.remove(i);
+  var allObjects = this.allObjects()
+  for(var i = 0; i < allObjects.length; i++) {
+    for(var j = i + 1; j < allObjects.length; j++) {
+      if (allObjects[i].isCollidedWith(allObjects[j])) {
+        allObjects[i].collideWith(allObjects[j]);
       }
     }
   }
@@ -57,6 +59,26 @@ Asteroids.Game.prototype.step = function () {
   this.checkCollisions();
 };
 
-Asteroids.Game.prototype.remove = function (asteroidIndex) {
-  this.asteroids.splice(asteroidIndex, 1)
+Asteroids.Game.prototype.remove = function (obj) {
+  if (obj instanceof Asteroids.Asteroid) {
+    var index = this.asteroids.indexOf(obj);
+    this.asteroids.splice(index, 1);
+  } else if (obj instanceof Asteroids.Bullet) {
+    var index = this.bullets.indexOf(obj);
+    this.bullets.splice(index, 1);
+  }
+}
+
+Asteroids.Game.prototype.allObjects = function () {
+  return this.asteroids.concat([this.ship]).concat(this.bullets);
+};
+
+Asteroids.Game.prototype.isOutOfBounds = function (pos) {
+  if (pos[0] < 0 || pos[0] > Asteroids.Game.DIM_Y) {
+    return true;
+  }
+  if (pos[1] < 0 || pos[1] > Asteroids.Game.DIM_X) {
+    return true;
+  }
+  return false;
 }
