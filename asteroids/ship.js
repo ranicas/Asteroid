@@ -27,9 +27,6 @@ Asteroids.Ship.prototype.draw = function (ctx) {
   ctx.arc(this.pos[1], this.pos[0], this.radius, 0, 2 * Math.PI);
   ctx.fillStyle = Asteroids.Util.randomColor();
   ctx.fill();
-  // ctx.lineWidth = 5;
- //  ctx.strokeStyle = Asteroids.Util.randomColor();
- //  ctx.stroke();
 };
 
 Asteroids.Ship.prototype.fireBullet = function() {

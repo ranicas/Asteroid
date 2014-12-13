@@ -1,23 +1,22 @@
 <html>
   <head>
-
+    <script src="./asteroids/keymaster.js"></script>
+    <script src="./asteroids/util.js"></script>
+    <script src="./asteroids/game.js"></script>
+    <script src="./asteroids/movingObject.js"></script>
+    <script src="./asteroids/asteroid.js"></script>
+    <script src="./asteroids/ship.js"></script>
+    <script src="./asteroids/bullet.js"></script>
+    <script src="./asteroids/gameView.js"></script>
+		<link rel="stylesheet" type="text/css" href="./asteroids.css">
   </head>
   <body>
     <canvas id="game-canvas"></canvas>
-    <script src="./astroids/keymaster.js"></script>
-    <script src="./astroids/util.js"></script>
-    <script src="./astroids/game.js"></script>
-    <script src="./astroids/movingObject.js"></script>
-    <script src="./astroids/asteroid.js"></script>
-    <script src="./astroids/ship.js"></script>
-    <script src="./astroids/bullet.js"></script>
-    <script src="./astroids/gameView.js"></script>
-
-
+		
     <script>
       var canvasEl = document.getElementById("game-canvas");
       canvasEl.height = window.innerHeight;
-      canvasEl.width = window.innerWidth;
+      canvasEl.width = window.innerWidth; 
       var ctx = canvasEl.getContext('2d');
       var game = new window.Asteroids.Game();
       var view = new window.Asteroids.GameView(game, ctx);
